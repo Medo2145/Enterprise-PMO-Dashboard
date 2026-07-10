@@ -1,0 +1,59 @@
+{
+  "alharbi.moh2003@example-company.com": {
+    "created_at": 1783337151,
+    "email": "alharbi.moh2003@example-company.com",
+    "first_name": "Mohammed",
+    "last_name": "Alharbi",
+    "password_hash": "$2b$12$iCA3DwsDaCJOgfKMmtsooeEPqOjwXoP/o2AM0WyDvi6Eg4gOK4VLC"
+  },
+  "alharbi.moh2003@gmail.com": {
+    "created_at": 1783468003,
+    "email": "alharbi.moh2003@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "password_hash": "$2b$12$PLIqLVJ77Sj5WEEOlSghcu2za6tuDx6IN75bZUp0VdJZ/8PPH9ZAG",
+    "password_reset_at": 1783720138
+  },
+  "breaking-bad@example-company.com": {
+    "created_at": 1783462363,
+    "email": "breaking-bad@example-company.com",
+    "first_name": "walter",
+    "last_name": "white",
+    "password_hash": "$2b$12$6Iqm63Z3cmT94bwe.ei/cucDE658NQhsK7hRIqIx1cJrHaDvT.Gc2"
+  },
+  "greatest_earthbender@example-company.com": {
+    "created_at": 1783339625,
+    "email": "greatest_earthbender@example-company.com",
+    "first_name": "toph",
+    "is_admin": true,
+    "last_name": "beifong",
+    "password_hash": "$2b$12$Wwope5WGdcFj.9uEIjyQEukyV7PwUiiIQY26rCaGI7GNRv.LJeOEe"
+  },
+  "honoramongthieves@example-company.com": {
+    "approval_status": "approved",
+    "approved_at": 1783720082,
+    "approved_by": "alharbi.moh2003@example-company.com",
+    "created_at": 1783720067,
+    "email": "honoramongthieves@example-company.com",
+    "first_name": "sly",
+    "last_name": "cooper",
+    "password_hash": "$2b$12$OStr8CrIhVLP78JthEGiRuMA15ZQ/R2sQgySNoLcmA49gRvoRi.3K"
+  },
+  "renad.almalki@example-company.com": {
+    "created_at": 1783335997,
+    "email": "renad.almalki@example-company.com",
+    "password_hash": "$2b$12$qM7Ah.XPf6TZ/IgRInOiyuVt5ZLbn3jTJAEqXOVUA3rm/K0rE9IRW"
+  },
+  "theoddonesout@example-company.com": {
+    "created_at": 1783338915,
+    "email": "theoddonesout@example-company.com",
+    "first_name": "James",
+    "last_name": "tomas",
+    "password_hash": "$2b$12$W.KIxCpvmslzZob3M1r1yu86U9KWOC8livxqEB5ehhFc0fdtXx7Qu"
+  },
+  "turki": {
+    "created_at": 1783334724,
+    "password_hash": "$2b$12$LK2t47dNUhZrYn5YughUp.iMkRlEc4o/FuYmPJMKrQA8/XwjVyicm",
+    "username": "turki"
+  }
+}
