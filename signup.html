@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up | Enterprise PMO Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="auth-page">
+    <main class="auth-shell">
+      <section class="auth-panel" aria-labelledby="signupTitle">
+        <div class="brand auth-brand">
+          <span class="brand-mark">EP</span>
+          <span>
+            <strong>Enterprise PMO</strong>
+            <small>Workbook Dashboard</small>
+          </span>
+        </div>
+        <div>
+          <p class="eyebrow">New User</p>
+          <h1 id="signupTitle">Create account</h1>
+        </div>
+        <form class="auth-form" id="signupForm">
+          <label>
+            <span>First Name</span>
+            <input id="firstName" name="first_name" type="text" autocomplete="given-name" required>
+          </label>
+          <label>
+            <span>Last Name</span>
+            <input id="lastName" name="last_name" type="text" autocomplete="family-name" required>
+          </label>
+          <label>
+            <span>Company Email</span>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example-company.com" pattern="^[^@\s]+@example-company\.com$" required>
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <label>
+            <span>Re-write Password</span>
+            <input id="confirmPassword" name="confirm_password" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <button type="submit">Create Account</button>
+          <a class="auth-link" href="/login.html">Return to login</a>
+          <p class="auth-message" id="authMessage" role="status"></p>
+        </form>
+      </section>
+    </main>
+    <script>
+      const form = document.querySelector('#signupForm');
+      const message = document.querySelector('#authMessage');
+
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        message.textContent = '';
+
+        if (form.password.value.length < 8) {
+          message.textContent = 'Password must be at least 8 characters.';
+          return;
+        }
+
+        if (form.password.value !== form.confirm_password.value) {
+          message.textContent = 'Passwords do not match.';
+          return;
+        }
+
+        const button = form.querySelector('button');
+        button.disabled = true;
+        button.textContent = 'Creating...';
+
+        try {
+          const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              first_name: form.first_name.value.trim(),
+              last_name: form.last_name.value.trim(),
+              email: form.email.value.trim(),
+              password: form.password.value,
+              confirm_password: form.confirm_password.value
+            })
+          });
+          const payload = await response.json();
+          if (!response.ok) throw new Error(payload.error || 'Sign up failed.');
+          location.href = '/login.html?signup=success';
+        } catch (error) {
+          message.textContent = error.message;
+          button.disabled = false;
+          button.textContent = 'Create Account';
+        }
+      });
+    </script>
+  </body>
+</html>

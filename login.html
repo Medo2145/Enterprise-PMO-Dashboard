@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | Enterprise PMO Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="auth-page">
+    <main class="auth-shell">
+      <section class="auth-panel" aria-labelledby="loginTitle">
+        <div class="brand auth-brand">
+          <span class="brand-mark">EP</span>
+          <span>
+            <strong>Enterprise PMO</strong>
+            <small>Workbook Dashboard</small>
+          </span>
+        </div>
+        <div>
+          <p class="eyebrow">Employee Login</p>
+          <h1 id="loginTitle">Sign in to dashboard</h1>
+        </div>
+        <form class="auth-form" id="loginForm">
+          <label>
+            <span>Company Email</span>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example-company.com" required>
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Password" required>
+          </label>
+          <button type="submit">Login</button>
+          <a class="auth-button secondary" href="/signup.html">Sign Up</a>
+          <a class="auth-link" href="/forgot-password.html">Forgot password?</a>
+          <p class="auth-message" id="authMessage" role="status"></p>
+        </form>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" hidden></div>
+    <script>
+      const form = document.querySelector('#loginForm');
+      const message = document.querySelector('#authMessage');
+      const toast = document.querySelector('#toast');
+
+      function showToast(text) {
+        toast.textContent = text;
+        toast.hidden = false;
+        setTimeout(() => {
+          toast.hidden = true;
+        }, 7000);
+      }
+
+      const logoutMessage = sessionStorage.getItem('logoutMessage');
+      if (logoutMessage) {
+        sessionStorage.removeItem('logoutMessage');
+        showToast(logoutMessage);
+      }
+
+      if (new URLSearchParams(location.search).get('signup') === 'success') {
+        showToast('Signup request submitted. An admin must approve it before you can sign in.');
+        history.replaceState({}, '', '/login.html');
+      }
+
+      if (new URLSearchParams(location.search).get('reset') === 'success') {
+        showToast('Password has been updated');
+        history.replaceState({}, '', '/login.html');
+      }
+
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        message.textContent = '';
+        const button = form.querySelector('button');
+        button.disabled = true;
+        button.textContent = 'Logging in...';
+
+        try {
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: form.email.value.trim(),
+              password: form.password.value
+            })
+          });
+          const payload = await response.json();
+          if (!response.ok) throw new Error(payload.error || 'Login failed.');
+          if (payload.first_name) sessionStorage.setItem('welcomeName', payload.first_name);
+          sessionStorage.setItem('canDeleteUsers', payload.can_delete_users ? 'true' : 'false');
+          sessionStorage.setItem('canAdmin', payload.is_admin || payload.can_delete_users ? 'true' : 'false');
+          sessionStorage.setItem('currentUserEmail', payload.email || '');
+          sessionStorage.setItem('adminEmails', JSON.stringify((payload.admin_emails || []).map(email => email.toLowerCase())));
+          sessionStorage.setItem('pendingUsers', JSON.stringify(payload.pending_users || []));
+          location.href = '/';
+        } catch (error) {
+          message.textContent = error.message;
+          button.disabled = false;
+          button.textContent = 'Login';
+        }
+      });
+    </script>
+  </body>
+</html>
